@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="10dp"
+        android:text="2019-11-26 19:11:26"
+
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toTopOf="@+id/tv_marker"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_marker" />
+
+    <com.bt.mylibrary.TimeLineMarkerView
+        android:id="@+id/tv_marker"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:paddingStart="10dp"
+        app:beginLine="@color/blue_sky"
+        app:endLine="@color/blue_sky"
+        app:marker="@drawable/timeline_bg_blue"
+        app:oritation="false"
+        app:layout_constraintStart_toEndOf="@+id/tv_date" />
+
+    <TextView
+        android:id="@+id/tv_summarized"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="10dp"
+        android:text="内容摘要"
+
+        app:layout_constraintStart_toEndOf="@+id/tv_marker"
+
+        app:layout_constraintTop_toTopOf="@+id/tv_marker"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_marker" />
+
+</android.support.constraint.ConstraintLayout>
