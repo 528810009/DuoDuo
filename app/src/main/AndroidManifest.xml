@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.guheng.duoduo">
 
+    <!-- 程序可以读取设备外部存储空间(内置SDcard和外置SDCard)的文件，如果您的App已经添加了”WRITE_EXTERNAL_STORAGE”权限，则就没必要添加读的权限了，写权限已经包含了读权限了 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <!-- 允许程序写入外部存储,如SD卡上写文件 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

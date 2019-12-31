@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="actions">
+        <item>宝宝要吃饭了！</item>
+        <item>宝宝要喝水了！</item>
+        <item>宝宝要睡觉了！</item>
+        <item>宝宝要睡醒了！</item>
+        <item>宝宝要拉屎了！</item>
+        <item>宝宝要补钙了！</item>
+        <item>宝宝要吃药了！</item>
+    </string-array>
+</resources>

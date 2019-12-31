@@ -10,33 +10,27 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bt.mylibrary.TimeLineMarkerView;
-import com.guheng.duoduo.Object.RecyclerViewItemEntity;
+import com.guheng.duoduo.Object.EntityItem;
+import com.guheng.duoduo.Object.EntityList;
 import com.guheng.duoduo.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter {
     private static final String TAG = "RecyclerViewAdapter";
     private OnItemClickListener mOnItemClickListener;
     private Context mContext;
-    private List<RecyclerViewItemEntity> mRecyclerViewItemEntityList;
-    private List<Boolean> mIsClickList;//控件是否被点击,默认为false，如果被点击，改变值，控件根据值改变自身颜色
+    private EntityList mEntityList;
     private int mSelectedPosition; // 选择行的索引
 
-    public RecyclerViewAdapter(Context context, List<RecyclerViewItemEntity> recyclerViewItemEntityList) {
+    public RecyclerViewAdapter(Context context, EntityList entityList) {
         this.mContext = context;
-        this.mIsClickList = new ArrayList<>();
-        this.setRecyclerViewItemEntityList(recyclerViewItemEntityList);
-        mSelectedPosition = -1;
+        this.setRecyclerViewListEntity(entityList);
+        this.mSelectedPosition = -1;
     }
 
-    public void setRecyclerViewItemEntityList(List<RecyclerViewItemEntity> recyclerViewItemEntityList) {
-        this.mRecyclerViewItemEntityList = recyclerViewItemEntityList;
-        this.mIsClickList.clear();
-        for (int i = 0; i < this.mRecyclerViewItemEntityList.size(); i++) {
-            this.mIsClickList.add(false);
-        }
+    public void setRecyclerViewListEntity(EntityList entityList) {
+        this.mEntityList = entityList;
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -52,36 +46,39 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
-        if (mRecyclerViewItemEntityList == null) {
+        if (this.mEntityList.isEmpty()) {
             return;
         }
-        RecyclerViewItemEntity entity = this.mRecyclerViewItemEntityList.get(position);
+
+        final int pos = holder.getAdapterPosition();
+
+        EntityItem entity = this.mEntityList.get(pos);
         if (entity == null) {
             return;
         }
 
-        ((RecyclerViewHolder) holder).mTvDate.setText(entity.getYearMonthDayHourMinuteSecondString());
+        ((RecyclerViewHolder) holder).mTvDate.setText(entity.getDate());
         ((RecyclerViewHolder) holder).mTvSummarized.setText(entity.getSummarized());
 
-        if (this.mIsClickList.get(position)) {
+        if (this.mEntityList.getIsClickList().get(pos)) {
             ((RecyclerViewHolder) holder).itemView.setBackgroundColor(Color.parseColor("#9e9e9e"/*灰色*/));
         } else {
             ((RecyclerViewHolder) holder).itemView.setBackgroundColor(Color.parseColor("#ffffff"/*白色*/));
         }
 
         final OnItemClickListener onItemClickListener = this.mOnItemClickListener;
-        final List<Boolean> isClickList = this.mIsClickList;
+        final List<Boolean> isClickList = this.mEntityList.getIsClickList();
         if (onItemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    setSelectedPosition(position);
+                    setSelectedPosition(pos);
 
                     for (int i = 0; i < isClickList.size(); i++) {
                         isClickList.set(i, false);
                     }
 
-                    isClickList.set(position, true);
+                    isClickList.set(pos, true);
 
                     notifyDataSetChanged();
 
@@ -102,48 +99,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return this.mRecyclerViewItemEntityList == null ? 0 : this.mRecyclerViewItemEntityList.size();
+        return this.mEntityList.size();
     }
 
-    protected void setSelectedPosition(int selectedPosition) {
+    public void setSelectedPosition(int selectedPosition) {
         this.mSelectedPosition = selectedPosition;
     }
 
     public int getSelectedPosition() {
         return mSelectedPosition;
-    }
-
-    public RecyclerViewItemEntity remove(int position) {
-        if (position == -1) {
-            return null;
-        }
-
-        if (this.mRecyclerViewItemEntityList == null) {
-            return null;
-        }
-
-        RecyclerViewItemEntity entity = this.mRecyclerViewItemEntityList.remove(position);
-        if (entity != null) {
-            setSelectedPosition(-1);
-
-            for (int i = 0; i < this.mIsClickList.size(); i++) {
-                this.mIsClickList.set(i, false);
-            }
-        }
-
-        notifyDataSetChanged();
-
-        return entity;
-    }
-
-    public void clear() {
-        if (this.mRecyclerViewItemEntityList == null) {
-            return;
-        }
-
-        this.mRecyclerViewItemEntityList.clear();
-
-        notifyDataSetChanged();
     }
 
     /*
